@@ -11,7 +11,11 @@ let rec read_dir path =
   in
   Array.iter
     ~f:(fun child ->
-        let full_path = path ^ "/" ^ child in
+        let full_path = if path = "./" then
+            path ^ child
+          else
+            path ^ "/" ^ child
+        in
         if is_dir full_path then
           read_dir full_path
         else
