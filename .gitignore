@@ -18,3 +18,14 @@ _build/
 # oasis generated files
 setup.data
 setup.log
+
+# vim stuff
+*.swp
+
+#osx stuff
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
