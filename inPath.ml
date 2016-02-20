@@ -17,6 +17,13 @@ let rec read_dir path =
             path ^ "/" ^ child
         in
         if is_dir full_path then
+          (* TODO:
+             * print parent dirs too?
+             * pattern match rather than ifs?
+             * use modules?
+             * collect paths as array in tail call?
+             * then filter/print results
+          *)
           read_dir full_path
         else
           print_endline full_path
