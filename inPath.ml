@@ -1,34 +1,34 @@
 open Core.Std
 
-let is_dir path =
-  if (Sys.is_directory path) = `Yes then
-    true
-  else
-    false
+(* TODO:
+   * print parent dirs too?
+   * pattern match rather than ifs?
+   * use modules?
+   * then filter/print results
+*)
 
-let rec read_dir path =
+let rec read_dir path paths_list =
   let children = Sys.readdir path
   in
-  Array.iter
-    ~f:(fun child ->
+  Array.fold
+    ~init: paths_list
+    ~f:(fun p_list child ->
         let full_path = if path = "./" then
             path ^ child
           else
             path ^ "/" ^ child
         in
-        if is_dir full_path then
-          (* TODO:
-             * print parent dirs too?
-             * pattern match rather than ifs?
-             * use modules?
-             * collect paths as array in tail call?
-             * then filter/print results
-          *)
-          read_dir full_path
+        if (Sys.is_directory full_path) = `Yes then
+          read_dir full_path paths_list
         else
-          print_endline full_path
+          full_path :: p_list
       )
     children
+
+let print_path_list p_list =
+  List.iter
+    ~f: print_endline
+    p_list
 
 let spec =
   let open Command.Spec in
@@ -41,8 +41,8 @@ let command =
     ~readme: (fun () -> "More detailed info")
     spec
     (fun path () ->
-       if is_dir path then
-         read_dir path
+       if (Sys.is_directory path) = `Yes then
+         print_path_list (read_dir path [])
        else
          eprintf "invalid dir path\n"
     )
