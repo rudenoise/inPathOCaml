@@ -19,7 +19,7 @@ let rec read_dir path paths_list =
             path ^ "/" ^ child
         in
         if (Sys.is_directory full_path) = `Yes then
-          read_dir full_path paths_list
+          (full_path ^ "/") :: (read_dir full_path p_list)
         else
           full_path :: p_list
       )
