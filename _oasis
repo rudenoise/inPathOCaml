@@ -1,0 +1,19 @@
+OASISFormat:    0.4
+Name:           inPath
+Version:        0.1
+Synopsis:       A simple CLI tool for finding sub-paths
+Authors:        Rudenoise
+License:        Apache
+Plugins:        META (0.4), DevFiles (0.4)
+BuildTools:     ocamlbuild, ocamlopt
+BuildDepends:   core, str,
+                core, camlp4, threads, 
+                sexplib.syntax, 
+                bin_prot.syntax, 
+                comparelib.syntax, 
+                herelib, 
+                herelib.syntax
+Executable "inPath"
+    Path: .
+    MainIs: inPath.ml
+    CompiledObject: best
