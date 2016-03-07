@@ -3,7 +3,7 @@ open Core.Std
 (* TODO:
    * pattern match rather than ifs?
    * use modules?
-   * then filter/print results
+   * use optional check for print
 *)
 
 let rec read_dir path paths_list =
@@ -24,14 +24,19 @@ let rec read_dir path paths_list =
       )
     children
 
-let print_path_list p_list =
+let print_path_list match_re p_list =
   List.iter
-    ~f: print_endline
+    ~f: (fun line ->
+        if Str.string_match (Str.regexp match_re) line 0
+        then print_endline line
+    )
     p_list
 
 let spec =
   let open Command.Spec in
   empty
+  +> flag "-i" (optional_with_default "." string)
+    ~doc:"include paths matching Regular Expression"
   +> anon ("path" %: string)
 
 let command =
@@ -39,9 +44,9 @@ let command =
     ~summary: "inPath displays all paths beneath the current directory"
     ~readme: (fun () -> "More detailed info")
     spec
-    (fun path () ->
+    (fun match_re path () ->
        if (Sys.is_directory path) = `Yes then
-         print_path_list (read_dir path [])
+         print_path_list match_re (read_dir path [])
        else
          eprintf "invalid dir path\n"
     )
