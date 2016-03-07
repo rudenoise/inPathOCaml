@@ -28,7 +28,7 @@ let print_path_list match_re p_list =
   List.iter
     ~f: (fun line ->
         if Str.string_match (Str.regexp match_re) line 0
-        then print_endline line
+        then print_endline (Str.replace_first (Str.regexp "\\/\\/") "/" line)
     )
     p_list
 
