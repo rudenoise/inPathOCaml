@@ -1,7 +1,6 @@
 open Core.Std
 
 (* TODO:
-   * print parent dirs too?
    * pattern match rather than ifs?
    * use modules?
    * then filter/print results
