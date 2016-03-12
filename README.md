@@ -5,6 +5,7 @@ A CLI tool for searching the paths beneath a given directory, written in OCaml
 # build
 ocamlfind ocamlopt -linkpkg -thread -package core -package str inPath.ml -o inPath.native
 # or with oasis
+rm -fr _build
 oasis setup
 ./configure
 make
