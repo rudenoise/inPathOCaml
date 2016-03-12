@@ -24,11 +24,14 @@ let rec read_dir path paths_list =
       )
     children
 
-let print_path_list include_re p_list =
+let print_path_list include_re exclude_re p_list =
   List.iter
     ~f: (fun line ->
-        if Str.string_match (Str.regexp include_re) line 0
-        then print_endline (Str.replace_first (Str.regexp "\\/\\/") "/" line)
+        if Str.string_match (Str.regexp include_re) line 0 then begin
+          if (Str.string_match (Str.regexp exclude_re) line 0) = false then
+            print_endline (Str.replace_first (Str.regexp "\\/\\/") "/" line)
+        end
+
     )
     p_list
 
@@ -37,6 +40,8 @@ let spec =
   empty
   +> flag "-i" (optional_with_default "." string)
     ~doc:"include paths matching Regular Expression"
+  +> flag "-e" (optional_with_default "\\*" string)
+    ~doc:"exclude paths matching Regular Expression"
   +> anon ("path" %: string)
 
 let command =
@@ -44,9 +49,9 @@ let command =
     ~summary: "inPath displays all paths beneath the current directory"
     ~readme: (fun () -> "More detailed info")
     spec
-    (fun include_re path () ->
+    (fun include_re exclude_re path () ->
        if (Sys.is_directory path) = `Yes then
-         print_path_list include_re (read_dir path [])
+         print_path_list include_re exclude_re (read_dir path [])
        else
          eprintf "invalid dir path\n"
     )
