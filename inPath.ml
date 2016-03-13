@@ -1,38 +1,14 @@
 open Core.Std
 
 (* TODO:
-   * use modules?
+   * make Path module functions use named vars
    * use optional check for print
    * make a generic include/exclude RE tuple
    * add tuple to a list (if present/not none)
    * fold the paths list against the tuples
+   * swap core for a targeted sub-set of libraries
 *)
 
-let rec read_dir path paths_list =
-  let children = Sys.readdir path
-  in
-  Array.fold
-    ~init: paths_list
-    ~f:(fun p_list child ->
-        let full_path = match path with
-          "./" -> path ^ child
-          | _ -> path ^ "/" ^ child
-        in
-        match (Sys.is_directory full_path) with
-          `Yes -> (full_path ^ "/") :: (read_dir full_path p_list)
-          | _ -> full_path :: p_list
-      )
-    children
-
-let print_path_list include_re exclude_re p_list =
-  List.iter
-    ~f: (fun line ->
-        if Str.string_match (Str.regexp include_re) line 0 then begin
-          if (Str.string_match (Str.regexp exclude_re) line 0) = false then
-            print_endline (Str.replace_first (Str.regexp "\\/\\/") "/" line)
-        end
-    )
-    p_list
 
 let spec =
   let open Command.Spec in
@@ -50,7 +26,7 @@ let command =
     spec
     (fun include_re exclude_re path () ->
        if (Sys.is_directory path) = `Yes then
-         print_path_list include_re exclude_re (read_dir path [])
+         Path.print_path_list include_re exclude_re (Path.read_dir path [])
        else
          eprintf "invalid dir path\n"
     )
