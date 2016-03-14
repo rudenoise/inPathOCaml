@@ -1,6 +1,6 @@
 open Core.Std
 
-let rec read_dir path paths_list =
+let rec read_dir ~path ~paths_list =
   let children = Sys.readdir path
   in
   Array.fold
@@ -11,7 +11,7 @@ let rec read_dir path paths_list =
           | _ -> path ^ "/" ^ child
         in
         match (Sys.is_directory full_path) with
-          `Yes -> (full_path ^ "/") :: (read_dir full_path p_list)
+          `Yes -> (full_path ^ "/") :: (read_dir ~path:full_path ~paths_list:p_list)
           | _ -> full_path :: p_list
       )
     children

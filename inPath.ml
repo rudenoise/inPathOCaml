@@ -26,7 +26,7 @@ let command =
     spec
     (fun include_re exclude_re path () ->
        if (Sys.is_directory path) = `Yes then
-         Path.print_path_list include_re exclude_re (Path.read_dir path [])
+         Path.print_path_list include_re exclude_re (Path.read_dir ~path:path ~paths_list:[])
        else
          eprintf "invalid dir path\n"
     )

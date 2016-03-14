@@ -2,7 +2,7 @@ open Core.Std
 
 (** collect paths in a directory and recurse sub-directories*)
 
-val read_dir : string -> string list -> string list
+val read_dir : path:string -> paths_list:string list -> string list
 
 (** print a list of strings/paths *)
 
