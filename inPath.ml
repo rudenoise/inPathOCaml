@@ -1,7 +1,6 @@
 open Core.Std
 
 (* TODO:
-   * make Path module functions use named vars
    * use optional check for print
    * make a generic include/exclude RE tuple
    * add tuple to a list (if present/not none)
