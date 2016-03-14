@@ -34,4 +34,4 @@ let command =
     )
 
 let () =
-  Command.run ~version:"0.1" ~build_info:"RWO" command
+  Command.run ~version:"0.1" ~build_info:"github.com/rudenoise/inPathOCaml" command
