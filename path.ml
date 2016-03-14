@@ -17,7 +17,7 @@ let rec read_dir ~path ~paths_list =
     children
 
 
-let print_path_list include_re exclude_re p_list =
+let print_path_list ~include_re ~exclude_re ~paths_list =
   List.iter
     ~f: (fun line ->
         if Str.string_match (Str.regexp include_re) line 0 then begin
@@ -25,4 +25,4 @@ let print_path_list include_re exclude_re p_list =
             print_endline (Str.replace_first (Str.regexp "\\/\\/") "/" line)
         end
     )
-    p_list
+    paths_list

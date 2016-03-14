@@ -23,9 +23,12 @@ let command =
     ~summary: "inPath displays all paths beneath the current directory"
     ~readme: (fun () -> "More detailed info")
     spec
-    (fun include_re exclude_re path () ->
+    (fun inc_re exc_re path () ->
        if (Sys.is_directory path) = `Yes then
-         Path.print_path_list include_re exclude_re (Path.read_dir ~path:path ~paths_list:[])
+         Path.print_path_list
+           ~include_re:inc_re
+           ~exclude_re:exc_re
+           ~paths_list:(Path.read_dir ~path:path ~paths_list:[])
        else
          eprintf "invalid dir path\n"
     )
