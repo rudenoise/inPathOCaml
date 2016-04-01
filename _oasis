@@ -8,8 +8,8 @@ Plugins:        META (0.4), DevFiles (0.4)
 BuildTools:     ocamlbuild, ocamlopt
 BuildDepends:   core, str,
                 core, camlp4, threads, 
-                sexplib.syntax, 
-                bin_prot.syntax, 
+                sexplib, 
+                bin_prot, 
                 comparelib.syntax, 
                 herelib, 
                 herelib.syntax
