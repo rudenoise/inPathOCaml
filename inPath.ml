@@ -55,7 +55,7 @@ let info =
     `S "BUGS";
     `P "Email bug reports to <rudenoise@gmail.com>.";]
   in
-  Term.info "cmd" ~version:"0.0.1" ~doc ~man
+  Term.info "inPath" ~version:"0.0.1" ~doc ~man
 
 let () = match Term.eval (man_main, info) with
 | `Error _ -> exit 1
