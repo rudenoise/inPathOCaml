@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: d8402cdf9c9187bfbdf434437ebaca00)
+# DO NOT EDIT (digest: bcc396bdc378a8b69f58bfe3f3f6dc54)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -15,22 +15,8 @@ true: annot, bin_annot
 "_darcs": -traverse
 "_darcs": not_hygienic
 # Executable inPath
-<inPath.{native,byte}>: pkg_bin_prot
-<inPath.{native,byte}>: pkg_camlp4
-<inPath.{native,byte}>: pkg_comparelib.syntax
-<inPath.{native,byte}>: pkg_core
-<inPath.{native,byte}>: pkg_herelib
-<inPath.{native,byte}>: pkg_herelib.syntax
-<inPath.{native,byte}>: pkg_sexplib
+<inPath.{native,byte}>: pkg_cmdliner
 <inPath.{native,byte}>: pkg_str
-<inPath.{native,byte}>: pkg_threads
-<*.ml{,i,y}>: pkg_bin_prot
-<*.ml{,i,y}>: pkg_camlp4
-<*.ml{,i,y}>: pkg_comparelib.syntax
-<*.ml{,i,y}>: pkg_core
-<*.ml{,i,y}>: pkg_herelib
-<*.ml{,i,y}>: pkg_herelib.syntax
-<*.ml{,i,y}>: pkg_sexplib
+<*.ml{,i,y}>: pkg_cmdliner
 <*.ml{,i,y}>: pkg_str
-<*.ml{,i,y}>: pkg_threads
 # OASIS_STOP

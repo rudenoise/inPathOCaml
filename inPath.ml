@@ -1,4 +1,4 @@
-open Core.Std
+open Cmdliner
 
 (* TODO:
    * use optional check for print
@@ -9,29 +9,54 @@ open Core.Std
 *)
 
 
-let spec =
-  let open Command.Spec in
-  empty
-  +> flag "-i" (optional_with_default "." string)
-    ~doc:"include paths matching Regular Expression"
-  +> flag "-e" (optional_with_default "\\*" string)
-    ~doc:"exclude paths matching Regular Expression"
-  +> anon ("path" %: string)
+let path =
+  let doc = "See option $(opt)." in
+  let env = Arg.env_var "CMD_PATH" ~doc in
+  let doc = "Run the program in directory $(docv)." in
+  Arg.(value & opt file Filename.current_dir_name & info ["p"] ~env
+         ~docv:"PATH" ~doc)
 
-let command =
-  Command.basic
-    ~summary: "inPath displays all paths beneath the current directory"
-    ~readme: (fun () -> "More detailed info")
-    spec
-    (fun inc_re exc_re path () ->
-       if (Sys.is_directory path) = `Yes then
-         Path.print_path_list
-           ~include_re:inc_re
-           ~exclude_re:exc_re
-           ~paths_list:(Path.read_dir ~path:path ~paths_list:[])
-       else
-         eprintf "invalid dir path\n"
-    )
+let inc =
+  let doc = "See option $(opt)." in
+  let docs = "INCLUDE SECTION" in
+  let env = Arg.env_var "CMD_INC" ~doc ~docs in
+  let doc = "Whatever this is the doc var $(docv) this is the env var $(env) \
+             this is the opt $(opt)."
+  in
+  Arg.(value & opt string "." & info ["i";] ~env ~docv:"INC" ~doc)
 
-let () =
-  Command.run ~version:"0.1" ~build_info:"github.com/rudenoise/inPathOCaml" command
+let exc =
+  let doc = "See option $(opt)." in
+  let docs = "EXCLUDE SECTION" in
+  let env = Arg.env_var "CMD_EXC" ~doc ~docs in
+  let doc = "Whatever this is the doc var $(docv) this is the env var $(env) \
+             this is the opt $(opt)."
+  in
+  Arg.(value & opt string "\\*" & info ["e";] ~env ~docv:"EXC" ~doc)
+
+let main inc exc path =
+  if (Sys.is_directory path) = true then
+    Path.print_path_list
+      ~include_re:inc
+      ~exclude_re:exc
+      ~paths_list:(Path.read_dir ~path:path ~paths_list:[])
+  else
+    Format.printf "invalid dir path: %s\n" path
+
+let man_main =
+  Term.(const main $ inc $ exc $ path)
+
+let info =
+  let doc = "list all sub-paths matching conditions" in
+  let man = [
+    `S "THIS IS A SECTION  FOR $(mname)";
+    `Noblank;
+    `S "ENVIRONMENT VARIABLES"; (* specify where env need to be *)
+    `S "BUGS";
+    `P "Email bug reports to <rudenoise@gmail.com>.";]
+  in
+  Term.info "cmd" ~version:"0.0.1" ~doc ~man
+
+let () = match Term.eval (man_main, info) with
+| `Error _ -> exit 1
+| _ -> exit 0
